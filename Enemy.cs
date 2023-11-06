@@ -14,13 +14,6 @@ public class Enemy : MonoBehaviour
         //enemyCollider = GetComponent<CapsuleCollider>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //if (health <= 0)
-        //    Destroy(gameObject);
-    }
-
     public void UpdateHealth(float damage)
     {
         if (!animator.GetBool("isDead"))
@@ -58,6 +51,5 @@ public class Enemy : MonoBehaviour
     public void StopDieAnimation()
     {
         Destroy(gameObject, 5f);
-        Debug.Log("Test");
     }
 }

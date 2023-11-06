@@ -20,6 +20,14 @@ public class ThirdPersonMovement : MonoBehaviour
     private Fighter fighter;
 
 
+    [SerializeField] private float gravity = 9.8f;
+    private float verticalSpeed = 0f;
+    [SerializeField] private float jumpForce = 10f;
+
+    private bool isGrounded;
+
+
+
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -31,21 +39,18 @@ public class ThirdPersonMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GroundCheck();
         Move();
+        //Attack();
+        Jump();
+        ApplyGravity();
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            fighter.Attack(animator, attackRange, damage);
-        }
-        else
-        {
-            fighter.StopAttackAnimation(animator);
-        }
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other.name);
+        Debug.Log(isGrounded);
+
+
+
+
     }
 
     private void Move()
@@ -64,19 +69,8 @@ public class ThirdPersonMovement : MonoBehaviour
             float booster = Input.GetKey(KeyCode.LeftShift) ? boosterSpeed : 1;
 
             Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-
             Vector3 move = booster * speed * Time.deltaTime * moveDirection.normalized;
 
-            // Ground character.
-            // Perform raycasting to detect ground.
-            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundCheckLength))
-            {
-                move.y = -hit.distance; // Keep the character grounded.
-            }
-            else
-            {
-                move.y = 0f; // Prevent hovering in the air if the ray doesn't hit.
-            }
 
             controller.Move(move);
             animator.SetFloat("forwardSpeed", direction.magnitude * booster, smoothAnimExit, Time.deltaTime);
@@ -86,4 +80,61 @@ public class ThirdPersonMovement : MonoBehaviour
             animator.SetFloat("forwardSpeed", 0f, smoothAnimExit, Time.deltaTime);
         }
     }
+
+    private void Attack()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            fighter.Attack(animator, attackRange, damage);
+        }
+    }
+
+    private void Jump()
+    {
+        //Debug.Log("isGrounded: " + controller.isGrounded);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+
+            if (isGrounded)
+            {
+                animator.SetBool("isJumping", true);
+
+                //controller.Move(jumpForce * Time.deltaTime * Vector3.up);
+            }
+        }
+    }
+
+    private void ApplyGravity()
+    {
+
+        if (isGrounded)
+        {
+            verticalSpeed = 0f; // Reset vertical speed when grounded
+        }
+        else
+        {
+            verticalSpeed += gravity * Time.deltaTime;
+        }
+
+        Vector3 gravityVector = Vector3.down * verticalSpeed;
+
+        // Apply gravity to the character controller's movement
+        controller.Move(gravityVector * Time.deltaTime);
+    }
+
+
+    private void GroundCheck()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundCheckLength))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }
+
+
 }
