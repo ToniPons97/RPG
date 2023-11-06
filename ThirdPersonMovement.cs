@@ -46,8 +46,6 @@ public class ThirdPersonMovement : MonoBehaviour
         ApplyGravity();
 
 
-        Debug.Log(isGrounded);
-
 
 
 
