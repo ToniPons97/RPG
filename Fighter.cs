@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class Fighter : MonoBehaviour
 {
+    [SerializeField] private string[] attackAnimations;
+    private int attackAnimationCounter;
 
     public void Attack(Animator playerAnimator, float attackRange, float damage)
     {
-        playerAnimator.SetBool("isAttacking", true);
+
+
+        Debug.Log(attackAnimationCounter);
+        playerAnimator.Play(attackAnimations[attackAnimationCounter]);
 
         Vector3 rayStartPosition = new Vector3(
             transform.position.x,
@@ -29,5 +34,13 @@ public class Fighter : MonoBehaviour
     public void StopAttackAnimation(Animator playerAnimator)
     {
         playerAnimator.SetBool("isAttacking", false);
+    }
+
+    public void UpdateAttackAnimCounter()
+    {
+        attackAnimationCounter = (attackAnimationCounter + 1) % attackAnimations.Length;
+
+        
+        //Debug.Log(attackAnimationCounter);
     }
 }

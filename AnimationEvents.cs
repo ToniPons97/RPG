@@ -6,11 +6,13 @@ public class AnimationEvents : MonoBehaviour
 {
     private Animator animator;
     private CharacterController controller;
+    private Fighter fighter;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         controller = transform.parent.gameObject.GetComponent<CharacterController>();
+        fighter = transform.parent.gameObject.GetComponent<Fighter>();
     }
 
 
@@ -29,4 +31,13 @@ public class AnimationEvents : MonoBehaviour
     {
         controller.Move(jumpForce * Time.deltaTime * Vector3.up);
     }
+
+    public void UpdateAttackAnimationCounter()
+    {
+        fighter.UpdateAttackAnimCounter();
+    }
+
+
+
+
 }

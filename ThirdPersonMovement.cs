@@ -41,14 +41,9 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         GroundCheck();
         Move();
-        //Attack();
+        Attack();
         Jump();
         ApplyGravity();
-
-
-
-
-
     }
 
     private void Move()
@@ -81,10 +76,15 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void Attack()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             fighter.Attack(animator, attackRange, damage);
         }
+        else
+        {
+            fighter.StopAttackAnimation(animator);
+        }
+
     }
 
     private void Jump()
