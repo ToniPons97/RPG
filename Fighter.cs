@@ -38,9 +38,12 @@ public class Fighter : MonoBehaviour
 
     public void UpdateAttackAnimCounter()
     {
-        attackAnimationCounter = (attackAnimationCounter + 1) % attackAnimations.Length;
+        attackAnimationCounter = (attackAnimationCounter + 1) % attackAnimations.Length;        
+    }
 
-        
-        //Debug.Log(attackAnimationCounter);
+    public void ResetAtackAnimCounter()
+    {
+        // Has to be -1 because as soon as we click it's being incremented to 0
+        attackAnimationCounter = -1;
     }
 }

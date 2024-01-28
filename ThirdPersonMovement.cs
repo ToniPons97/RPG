@@ -85,6 +85,11 @@ public class ThirdPersonMovement : MonoBehaviour
             fighter.StopAttackAnimation(animator);
         }
 
+        if (Input.GetMouseButtonUp(0))
+        {
+            fighter.ResetAtackAnimCounter();
+        }
+
     }
 
     private void Jump()
